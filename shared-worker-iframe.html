@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="content"></div>
+
+
+<script>
+const sharedWorker = new SharedWorker('./assets/js/sharedWorker.js')
+sharedWorker.port.start()
+
+const content = document.getElementById('content')
+
+sharedWorker.port.addEventListener('message', (event) =>{
+   addMessage(event.data)
+})
+
+function addMessage(message){
+      var p = document.createElement('p');
+      p.innerHTML = message;
+      content.appendChild(p)
+}
+
+</script>
+</body>
+</html>

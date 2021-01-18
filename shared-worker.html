@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>SharedWorker</h1>
+
+  <button id="test">Say Hi to worker</button>
+  <button id="test1">Say Hello To All</button>
+  <button id="test2">Say Bonjour To Alternate Iframes </button>
+
+  <div style="display: flex; justify-content:space-between">
+    <div id="content"></div>
+   <div>
+     <iframe src="./shared-worker-iframe.html" height="300"></iframe>
+     <iframe src="./shared-worker-iframe.html" height="300"></iframe>
+    <iframe src="./shared-worker-iframe.html" height="300"></iframe>
+    <iframe src="./shared-worker-iframe.html" height="300"></iframe>
+  </div>
+  </div>
+
+<script>
+
+const sharedWorker = new SharedWorker('./assets/js/sharedWorker.js')
+sharedWorker.port.start()
+
+const content = document.getElementById('content')
+
+document.getElementById('test').addEventListener('click',()=>{
+  sharedWorker.port.postMessage("HI")
+})
+
+
+document.getElementById('test1').addEventListener('click',()=>{
+  sharedWorker.port.postMessage("HELLO")
+})
+
+document.getElementById('test2').addEventListener('click',()=>{
+  sharedWorker.port.postMessage("BONJOUR")
+})
+
+
+sharedWorker.port.addEventListener('message', (event) =>{
+  console.log("Recieved Message", event.data)
+   addMessage(event.data)
+})
+
+function addMessage(message){
+      var p = document.createElement('p');
+      p.innerHTML = message;
+      content.appendChild(p)
+}
+
+
+</script>
+</body>
+</html>
