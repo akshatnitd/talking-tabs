@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Worker</h1>
+
+  <button id="test">Say Hi to worker</button>
+  <div id="content"></div>
+
+<script>
+
+const worker = new Worker('./assets/js/worker.js')
+
+const content = document.getElementById('content')
+
+document.getElementById('test').addEventListener('click',()=>{
+  worker.postMessage("Hi")
+})
+
+
+worker.addEventListener('message', (event) =>{
+      addMessage(event.data)
+})
+
+function addMessage(message){
+      var p = document.createElement('p');
+      p.innerHTML = message;
+      content.appendChild(p)
+}
+
+</script>
+</body>
+</html>
